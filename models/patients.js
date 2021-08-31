@@ -3,15 +3,15 @@ const mongoose = require("mongoose");
 const patientsSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     fullName: {
-        Type: String,
+        type: String,
         required: true
     },
     doctor: {
-        Type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Doctors"
     },
     age: {
-        Type: Number,
+        type: Number,
         validate: {
             validator: function(anAge) {
                 return anAge >= 0 && anAge <= 120;
@@ -20,11 +20,11 @@ const patientsSchema = mongoose.Schema({
         }
     },
     visitDate: {
-        Type: Date,
+        type: Date,
         default: Date.now()
     },
     caseDesc: {
-        Type: String,
+        type: String,
         validate: {
             validator: function(aCaseDesc) {
                 return aCaseDesc.length >= 10;

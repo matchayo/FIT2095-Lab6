@@ -4,7 +4,7 @@ const doctorSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     fullName: {
         firstName: {
-            Type: String,
+            type: String,
             required: true
         },
         lastName: String
@@ -12,7 +12,7 @@ const doctorSchema = mongoose.Schema({
     dob: Date,
     address: {
         state: {
-            Type: String,
+            type: String,
             validate: {
                 validator: function(aState) {
                     return aState.length >= 2 && aState.length <= 3;
@@ -25,7 +25,7 @@ const doctorSchema = mongoose.Schema({
         unit: String // IDK??
     },
     numPatients: {
-        Type: Number,
+        type: Number,
         validate: {
             validator: function(aNum) {
                 return aNum >= 0;
