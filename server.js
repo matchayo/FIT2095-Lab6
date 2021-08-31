@@ -140,7 +140,7 @@ app.post("/doctor-updated", function(req, res) {
         });
     } else {
         let err = "Number of patients cannot be negative";
-        res.redirect("/data-invalid?" + err);
+        res.redirect("/data-invalid?err=" + err);
     }
 });
 
