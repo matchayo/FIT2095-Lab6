@@ -92,9 +92,11 @@ app.post("/patient-added", function(req, res) {
 
 app.get("/listDoctors", function (req, res) {
     Doctors.find({}, function (err, data) {
-        console.log(data);
+        if (err) {
+            res.render("listDoctors.html");
+        }
+        res.render("listDoctors.html", {doctors: data});
     });
-    res.render("listDoctors.html");
 });
 
 app.get("/listPatients", function (req, res) {

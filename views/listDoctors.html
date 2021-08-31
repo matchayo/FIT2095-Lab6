@@ -31,5 +31,38 @@
   <a href="/deletePatient"><button type="button" class="btn btn-primary">Delete Patient</button></a>
   <a href="/updateDoctor"><button type="button" class="btn btn-primary">Update Doctor</button></a>
 </div>
+<div class="container">
+  <h2>List of Doctors</h2>         
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Date of Birth</th>
+        <th>State</th>
+        <th>Suburb</th>
+        <th>Street</th>
+        <th>Unit</th>
+        <th>No. of Patients</th>
+        <th>ID</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(let i = 0; i < doctors.length; i++) { %>
+      <tr>
+        <td><%=doctors[i].fullName.firstName%></td>
+        <td><%=doctors[i].fullName.lastName%></td>
+        <td><%=("0" + doctors[i].dob.getDate()).slice(-2)%>/<%=("0" + (doctors[i].dob.getMonth() + 1)).slice(-2)%>/<%=doctors[i].dob.getFullYear()%></td>
+        <td><%=doctors[i].address.state%></td>
+        <td><%=doctors[i].address.suburb%></td>
+        <td><%=doctors[i].address.street%></td>
+        <td><%=doctors[i].address.unit%></td>
+        <td><%=doctors[i].numPatients%></td>
+        <td><%=doctors[i]._id%></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
 </body>
 </html>
