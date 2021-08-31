@@ -32,7 +32,7 @@ app.get("/", function (req, res) {
     res.render("index.html");
 });
 
-app.get("/addDoctor", function (req, res) {
+app.get("/add-doctor", function (req, res) {
     res.render("addDoctor.html");
 });
 
@@ -56,16 +56,16 @@ app.post("/doctor-added", function(req, res) {
 
     newDoctor.save(function(err) {
         if (err) {
-            console.log(err);
+            res.redirect("/data-invalid?err=" + err);
             return;
         }
-        console.log("Saved successfully");
-    });
 
-    res.redirect("/listDoctors");
+        console.log("Saved successfully");
+        res.redirect("/list-doctors");
+    });
 });
 
-app.get("/addPatient", function (req, res) {
+app.get("/add-patient", function (req, res) {
     res.render("addPatient.html");
 });
 
@@ -82,16 +82,20 @@ app.post("/patient-added", function(req, res) {
 
     newPatient.save(function(err) {
         if (err) {
-            console.log(err);
+            res.redirect("/data-invalid?err=" + err);
             return;
         }
-        console.log("Saved successfully");
-    });
 
-    res.redirect("/listPatients");
+        console.log("Saved successfully");
+        Doctors.updateOne({ '_id': mongoose.Types.ObjectId(req.body.doctor) }, 
+        { $inc: { "numPatients": 1 } }, function (err, doc) {
+            if (err) throw err;
+        });
+        res.redirect("/list-patients");
+    });
 });
 
-app.get("/listDoctors", function (req, res) {
+app.get("/list-doctors", function (req, res) {
     Doctors.find({}, function (err, data) {
         if (err) {
             res.render("listDoctors.html");
@@ -100,46 +104,48 @@ app.get("/listDoctors", function (req, res) {
     });
 });
 
-app.get("/listPatients", function (req, res) {
+app.get("/list-patients", function (req, res) {
     Patients.find({}).populate("doctor").exec(function (err, data) {
         if (err) {
-            res.render("listPatients.html");
+            throw err;
         }
         res.render("listPatients.html", {moment: moment, patients: data});
     });
 });
 
-app.get("/deletePatient", function (req, res) {
+app.get("/delete-patient", function (req, res) {
     res.render("deletePatient.html");
 });
 
 app.post("/patient-deleted", function(req, res) {
     Patients.deleteOne(req.body, function(err) {
-        if (err)
-            res.redirect("/data-invalid");
+        if (err) throw err;
 
-        res.redirect("/listPatients");
+        res.redirect("/list-patients");
     });
 });
 
-app.get("/updateDoctor", function (req, res) {
+app.get("/update-doctor", function (req, res) {
     res.render("updateDoctor.html");
 });
 
 app.post("/doctor-updated", function(req, res) {
-    let findID = {"_id": req.body._id};
-    let setNumPatients = {$set: {"numPatients": req.body.numPatients}};
-    
-    Doctors.updateOne(findID, setNumPatients, function(err, doc) {
-        if (err)
-            res.redirect("/data-invalid");
-
-        res.redirect("/listDoctors");
-    });
+    if (req.body.numPatients >= 0) {
+        let findID = {"_id": req.body._id};
+        let setNumPatients = {$set: {"numPatients": req.body.numPatients}};
+        
+        Doctors.updateOne(findID, setNumPatients, function(err, doc) {
+            if (err) throw err;
+            res.redirect("/list-doctors");
+        });
+    } else {
+        let err = "Number of patients cannot be negative";
+        res.redirect("/data-invalid?" + err);
+    }
 });
 
 app.get("/data-invalid", function (req, res) {
-    res.render("invalidData.html");
+    res.render("invalidData.html", {err: req.query["err"]});
 });
 
 app.listen(app.get("PORT"), function() {

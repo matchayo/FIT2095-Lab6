@@ -25,7 +25,7 @@ const doctorSchema = mongoose.Schema({
         },
         suburb: String,
         street: String,
-        unit: Number // IDK??
+        unit: Number
     },
     numPatients: {
         type: Number,
