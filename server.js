@@ -5,6 +5,7 @@ const ejs = require("ejs");
 const app = express();
 const url = "mongodb://localhost:27017/FIT2095Lab6_DB";
 const Doctors = require("./models/doctors");
+const Patients = require("./models/patients");
 
 mongoose.connect(url, function(err) {
     if (err) {
@@ -67,11 +68,39 @@ app.get("/addPatient", function (req, res) {
     res.render("addPatient.html");
 });
 
+app.post("/patient-added", function(req, res) {
+    console.log(req.body);
+
+    let newPatient = new Patients({
+        fullName: req.body.fullName,
+        doctor: mongoose.Types.ObjectId(req.body.doctor),
+        age: req.body.age,
+        visitDate: req.body.visitDate,
+        caseDesc: req.body.caseDesc
+    });
+
+    newPatient.save(function(err) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        console.log("Saved successfully");
+    });
+
+    res.redirect("/listPatients");
+});
+
 app.get("/listDoctors", function (req, res) {
+    Doctors.find({}, function (err, data) {
+        console.log(data);
+    });
     res.render("listDoctors.html");
 });
 
 app.get("/listPatients", function (req, res) {
+    Patients.find({}).populate("doctor").exec(function (err, data) {
+        console.log(data);
+    });
     res.render("listPatients.html");
 });
 

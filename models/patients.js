@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
 
 const patientsSchema = mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
+    _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        auto: true
+    },
     fullName: {
         type: String,
         required: true
