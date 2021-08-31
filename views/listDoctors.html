@@ -45,7 +45,7 @@
       <tr>
         <td><%=doctors[i].fullName.firstName%></td>
         <td><%=doctors[i].fullName.lastName%></td>
-        <td><%=("0" + doctors[i].dob.getDate()).slice(-2)%>/<%=("0" + (doctors[i].dob.getMonth() + 1)).slice(-2)%>/<%=doctors[i].dob.getFullYear()%></td>
+        <td><%=moment(doctors[i].dob).format("DD/MM/YYYY")%></td>
         <td><%=doctors[i].address.state%></td>
         <td><%=doctors[i].address.suburb%></td>
         <td><%=doctors[i].address.street%></td>

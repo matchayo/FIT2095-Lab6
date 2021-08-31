@@ -14,14 +14,6 @@
   <p>Welcome to Week 6 Lab</p> 
 </div>
   
-<!-- <div id="links">
-    <a href="/addDoctor">Add Doctor</a><br/>
-    <a href="/addPatient">Add Patient</a><br/>
-    <a href="/listDoctors">List Doctors</a><br/>
-    <a href="/listPatients">List Patients</a><br/>
-    <a href="/deletePatient">Delete Patient</a><br/>
-    <a href="/updateDoctor">Update Doctor</a><br/>
-</div> -->
 <div id="links">
   <a href="/"><button type="button" class="btn btn-primary">Home</button></a>
   <a href="/addDoctor"><button type="button" class="btn btn-primary">Add Doctor</button></a>
@@ -30,6 +22,32 @@
   <a href="/listPatients"><button type="button" class="btn btn-primary">List Patients</button></a>
   <a href="/deletePatient"><button type="button" class="btn btn-primary">Delete Patient</button></a>
   <a href="/updateDoctor"><button type="button" class="btn btn-primary">Update Doctor</button></a>
+</div>
+
+<div class="container">
+  <h2><b>Update Doctor Form</b></h2>
+
+  <form class="form-horizontal" action="/doctor-updated" method="POST">
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="_id">Doctor ID</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="_id" placeholder="Enter doctor ID" name="_id">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="numPatients">Number of Patients</label>
+      <div class="col-sm-10">
+        <input type="number" class="form-control" id="numPatients" placeholder="Enter number of patients" name="numPatients">
+      </div>
+    </div>
+    
+    <div class="form-group">        
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-success">Update Doctor</button>
+      </div>
+    </div>
+  </form>
 </div>
 
 </body>

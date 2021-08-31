@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const ejs = require("ejs");
+const moment = require("moment");
 
 const app = express();
 const url = "mongodb://localhost:27017/FIT2095Lab6_DB";
@@ -95,7 +96,7 @@ app.get("/listDoctors", function (req, res) {
         if (err) {
             res.render("listDoctors.html");
         }
-        res.render("listDoctors.html", {doctors: data});
+        res.render("listDoctors.html", {moment: moment, doctors: data});
     });
 });
 
@@ -104,7 +105,7 @@ app.get("/listPatients", function (req, res) {
         if (err) {
             res.render("listPatients.html");
         }
-        res.render("listPatients.html", {patients: data});
+        res.render("listPatients.html", {moment: moment, patients: data});
     });
 });
 
@@ -112,11 +113,32 @@ app.get("/deletePatient", function (req, res) {
     res.render("deletePatient.html");
 });
 
+app.post("/patient-deleted", function(req, res) {
+    Patients.deleteOne(req.body, function(err) {
+        if (err)
+            res.redirect("/data-invalid");
+
+        res.redirect("/listPatients");
+    });
+});
+
 app.get("/updateDoctor", function (req, res) {
     res.render("updateDoctor.html");
 });
 
-app.get("*", function (req, res) {
+app.post("/doctor-updated", function(req, res) {
+    let findID = {"_id": req.body._id};
+    let setNumPatients = {$set: {"numPatients": req.body.numPatients}};
+    
+    Doctors.updateOne(findID, setNumPatients, function(err, doc) {
+        if (err)
+            res.redirect("/data-invalid");
+
+        res.redirect("/listDoctors");
+    });
+});
+
+app.get("/data-invalid", function (req, res) {
     res.render("invalidData.html");
 });
 
