@@ -13,15 +13,7 @@
   <h1><b>FIT2095 CLINIC</b></h1>
   <p>Welcome to Week 6 Lab</p> 
 </div>
-  
-<!-- <div id="links">
-    <a href="/addDoctor">Add Doctor</a><br/>
-    <a href="/addPatient">Add Patient</a><br/>
-    <a href="/listDoctors">List Doctors</a><br/>
-    <a href="/listPatients">List Patients</a><br/>
-    <a href="/deletePatient">Delete Patient</a><br/>
-    <a href="/updateDoctor">Update Doctor</a><br/>
-</div> -->
+
 <div id="links">
   <a href="/"><button type="button" class="btn btn-primary">Home</button></a>
   <a href="/addDoctor"><button type="button" class="btn btn-primary">Add Doctor</button></a>
@@ -30,6 +22,34 @@
   <a href="/listPatients"><button type="button" class="btn btn-primary">List Patients</button></a>
   <a href="/deletePatient"><button type="button" class="btn btn-primary">Delete Patient</button></a>
   <a href="/updateDoctor"><button type="button" class="btn btn-primary">Update Doctor</button></a>
+</div>
+
+<div class="container">
+  <h2>List of Patients</h2>         
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Full Name</th>
+        <th>Age</th>
+        <th>Date of Visit</th>
+        <th>Doctor's First Name</th>
+        <th>Doctor's Last Name</th>
+        <th>Case Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(let i = 0; i < patients.length; i++) { %>
+      <tr>
+        <td><%=patients[i].fullName%></td>
+        <td><%=patients[i].age%></td>
+        <td><%=("0" + patients[i].visitDate.getDate()).slice(-2)%>/<%=("0" + (patients[i].visitDate.getMonth() + 1)).slice(-2)%>/<%=patients[i].visitDate.getFullYear()%></td>
+        <td><%=patients[i].doctor.fullName.firstName%></td>
+        <td><%=patients[i].doctor.fullName.lastName%></td>
+        <td><%=patients[i].caseDesc%></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
 </div>
 
 </body>

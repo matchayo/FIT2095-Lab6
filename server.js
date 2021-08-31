@@ -101,9 +101,11 @@ app.get("/listDoctors", function (req, res) {
 
 app.get("/listPatients", function (req, res) {
     Patients.find({}).populate("doctor").exec(function (err, data) {
-        console.log(data);
+        if (err) {
+            res.render("listPatients.html");
+        }
+        res.render("listPatients.html", {patients: data});
     });
-    res.render("listPatients.html");
 });
 
 app.get("/deletePatient", function (req, res) {
