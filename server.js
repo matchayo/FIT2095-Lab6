@@ -3,7 +3,18 @@ const mongoose = require("mongoose");
 const ejs = require("ejs");
 
 const app = express();
-const url = "mongodb://localhost:27017/";
+const url = "mongodb://localhost:27017/FIT2095Lab6_DB";
+const Doctors = require("./models/doctors");
+
+mongoose.connect(url, function(err) {
+    if (err) {
+        console.log(err);
+        return;
+    }
+
+    console.log("Successfully connected");
+});
+
 app.set("PORT", 8080);
 
 app.engine("html", ejs.renderFile);
@@ -21,6 +32,35 @@ app.get("/", function (req, res) {
 
 app.get("/addDoctor", function (req, res) {
     res.render("addDoctor.html");
+});
+
+app.post("/doctor-added", function(req, res) {
+    console.log(req.body);
+
+    let newDoctor = new Doctors({
+        fullName: {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName
+        },
+        dob: req.body.dob,
+        address: {
+            state: req.body.state,
+            suburb: req.body.suburb,
+            street: req.body.street,
+            unit: req.body.unit
+        },
+        numPatients: req.body.numPatients
+    });
+
+    newDoctor.save(function(err) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        console.log("Saved successfully");
+    });
+
+    res.redirect("/listDoctors");
 });
 
 app.get("/addPatient", function (req, res) {
