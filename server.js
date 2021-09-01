@@ -144,8 +144,22 @@ app.post("/doctor-updated", function(req, res) {
     }
 });
 
+app.get("/find-doctors", function (req, res) {
+    res.render("findDoctors.html");
+});
+
 app.get("/data-invalid", function (req, res) {
     res.render("invalidData.html", {err: req.query["err"]});
+});
+
+app.post("/doctors-found", function(req, res) {
+    let num = req.body.numPatients;
+    Doctors.where("numPatients").lt(num).exec(function (err, data) {
+        if (err) {
+            throw err;
+        }
+        res.render("listDoctors.html", {moment: moment, doctors: data});
+    });
 });
 
 app.listen(app.get("PORT"), function() {
